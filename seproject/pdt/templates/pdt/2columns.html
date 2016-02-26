@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{% block title %}{% endblock %}Project Data Tracker</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        
+		{% load staticfiles %}
+		<link rel="stylesheet" href="{% static 'css/kube.min.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <script src="{% static 'js/user.js' %}"></script>
+	</head>
+	<body>
+		<header>
+			<div class="wrap">
+				<h1><a href="/">Project Data Tracker</a></h1>
+			</div>
+		</header>
+
+		<div id="bodywrap">
+        <row>
+            <column cols="2">
+                <section id="project">
+                    <h2 >Active</h2>
+                    {% if active_projects %}
+                    <ul class="project_list">
+                        {% for p in active_projects %}
+                        <li><a href="{% url 'pdt:project' p.id %}" title="{{ p.name }}" class="btn" outline>{{ p.name|truncatechars:15 }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="message message-primary">
+                        <p>No active project</p>
+                    </div>
+                    {% endif %}
+
+                    <h2>Completed</h2>
+                    {% if completed_projects %}
+                    <ul class="project_list">
+                        {% for p in completed_projects %}
+                        <li><a href="{% url 'pdt:project' p.id %}" title="{{ p.name }}" class="btn" outline>{{ p.name|truncatechars:15 }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>No completed project</p>
+                    {% endif %}
+                </section>
+            </column>
+            
+            <column cols="10">
+                <section id="phase">
+				{% block phase_block %}
+				{% endblock %}
+                </section>
+            </column>
+        </row>
+
+
+
+		</div>
+
+		<div style="clear:both"></div>
+		<footer>
+			<div class="wrap">
+				<strong>System time: {% now "Y-n-j f a" %}</strong>
+			</div>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}Project Data Tracker</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        
+        {% load staticfiles %}
+        <!--<link rel="stylesheet" href="{% static 'css/kube.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />-->
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css" />
+        <script src="{% static 'js/user.js' %}"></script>
+    </head>
+    <body role="document">
+
+        <div class="container theme-showcase" role="main">
+            
+      <div class="row">
+        <div class="col-md-12">
+            <div class="col-sm-5">
+		          <div class="panel panel-primary">
+		            <div class="panel-heading">
+		              <h3 class="panel-title text-center">Timer</h3>
+		            </div>
+		            <div class="panel-body">
+
+		              <h1 class="text-center"><time id="hour">{{ hours }}</time> : <time id="minute">{{ minutes }}</time> : <time id="second">{{ seconds }}</time></h1>
+                              
+                              
+						<div id="timer" class="basic stopwatch">
+							<span id="time" style="display: none">0</span>
+								<div width="100%">
+									<form action="/pdt/timer_control/3/{{ timer.id }}" method="post">{% csrf_token %}
+										<button style="width: 100px; float: left;" type="submit" class="btn btn-success" href="#resume" id="resume">resume</button>
+									</form>
+									<form action="/pdt/timer_control/1/{{ timer.id }}" method="post">{% csrf_token %}
+										<button style="width: 100px; float: left;" type="submit" class="btn btn-warning" href="#pause" id="pause">pause</button>
+									</form>
+									<form action="/pdt/timer_control/2/{{ timer.id }}" method="post">{% csrf_token %}
+										<button style="width: 100px; float: right;" type="submit" onclick="window.open('', '_self', ''); window.close();" class="btn btn-danger" href="#stop" id="stop">stop</button>
+									</form>
+								</table>
+						</div>
+
+		            </div>
+		          </div>
+        	</div>
+
+        </div>
+
+      </div>
+
+        </div>
+
+
+    </body>
+</html>
+
+
+<script>
+var Stopwatch = function(elem, options) {
+  
+  var timer       = document.getElementById("time"),
+      resumeButton = createResume(resume),
+      pauseButton  = createPause(pause),
+      offset,
+      clock,
+      interval;
+  
+  // default options
+  options = options || {};
+  options.delay = options.delay || 1;
+ 
+  // initialize
+  reset();
+  
+
+  function createResume(handler) {
+    var a = document.getElementById("resume");
+    a.addEventListener("click", function(event) {
+      handler();
+      event.preventDefault();
+    });
+    a.style.display = 'none';
+    return a;
+  }
+
+  function createPause(handler) {
+    var a = document.getElementById("pause");
+    a.addEventListener("click", function(event) {
+      handler();
+      event.preventDefault();
+    });
+    a.style.display = 'none';
+    return a;
+  }
+  
+  function createButton(action, handler) {
+    var a = document.createElement("a");
+    a.href = "#" + action;
+    a.innerHTML = action;
+    a.addEventListener("click", function(event) {
+      handler();
+      event.preventDefault();
+    });
+    return a;
+  }
+  
+  function resume() {
+    if (!interval) {
+      offset   = Date.now();
+      interval = setInterval(update, options.delay);
+    }
+    var b = document.getElementById("pause");
+    b.style.display = '';
+    var a = document.getElementById("resume");
+    a.style.display = 'none';
+  }
+  
+  function pause() {
+    if (interval) {
+      clearInterval(interval);
+      interval = null;
+    }
+    var b = document.getElementById("resume");
+    b.style.display = '';
+    var a = document.getElementById("pause");
+    a.style.display = 'none';
+  }
+  
+  function reset() {
+    clock = 0;
+    render(0);
+  }
+  
+  function update() {
+    clock += delta();
+    render();
+  }
+  
+  function render() {
+    timer.innerHTML = clock/1000; 
+    var second = document.getElementById("second");
+    var minute = document.getElementById("minute");
+    var hour = document.getElementById("hour");
+
+    second.innerHTML = two_digit(Math.floor((clock/1000)%60));
+    minute.innerHTML = two_digit(Math.floor(((clock/1000)%3600)/60));
+    hour.innerHTML = two_digit(Math.floor(((clock/1000%216000)/60/60)));
+  }
+  
+  function delta() {
+    var now = Date.now(),
+        d   = now - offset;
+    
+    offset = now;
+    return d;
+  }
+
+  function two_digit(number) {
+  	return (number < 10 ? '0' : '') + number;
+  }
+  
+  // public API
+  this.resume  = resume;
+  this.pause   = pause;
+  this.reset  = reset;
+};
+
+
+// basic examples
+var elems = document.getElementById("timer");
+timer_a = new Stopwatch(elems);
+timer_a.resume();
+
+
+</script>

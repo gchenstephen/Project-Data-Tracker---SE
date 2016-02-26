@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}Project Data Tracker</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        
+        {% load staticfiles %}
+        <!--<link rel="stylesheet" href="{% static 'css/kube.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />-->
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css" />
+        <script src="{% static 'js/user.js' %}"></script>
+    </head>
+    <body role="document">
+
+        
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/pdt/activity/">Project Data Tracker</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                </ul>
+              <form class="navbar-form navbar-right" action="/pdt/project/100000/" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <input type="text" placeholder="Input Project Name" class="form-control" name="project_name">
+                    </div>
+
+                    <button type="submit" class="btn btn-success" value="Add project">Add Project</button>
+                  </form>
+            </div><!--/.nav-collapse -->
+          </div>
+        </nav>
+
+        <div class="container theme-showcase" role="main">
+            <div class="page-header">
+      </div>
+
+      <h1>{{ name }}</h1>
+
+<div class="row">
+        <div class="col-md-6">
+            <h3>Active iterations</h3>
+
+            <table class="table">
+            {% if active_iterations %}
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Start date</th>
+                <th>To close</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for active in active_iterations %}
+              <tr>
+                <td>{{ active.name }}</td>
+                <td>{{ active.start_date }}</td>
+                <td><form action="/pdt/iteration/{{ pid }}/{{ phid }}/{{ active.id }}/" method="post">
+                                {% csrf_token %}
+                                <input type="text" name="SLOC" placeholder="Input SLOC"><br><input class="btn btn-xs btn-info" type="submit" value="Close Iteration">
+                            </form></td>
+              </tr>
+              {% endfor %}
+                    {% else %}
+                        <div class="alert alert-warning" role="alert">
+                            No active iterations
+                          </div>
+                    {% endif %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="col-md-6">
+            <h3>Completed iterations</h3>
+
+            <table class="table">
+            {% if completed_iterations %}
+            <thead>
+              <tr>
+                  <th>Name</th>
+                  <th>Start date</th>
+                  <th>Finish date</th>
+                  <th>SLOC</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for completed in completed_iterations %}
+              <tr>
+                  <td>{{ completed.name }}</td>
+                  <td>{{ completed.start_date }}</td>
+                  <td>{{ completed.finish_date }}</td>
+                  <td>{{ completed.sloc }}</td>
+              </tr>
+              {% endfor %}
+                    {% else %}
+                        <div class="alert alert-warning" role="alert">
+                            No completed iterations
+                          </div>
+                    {% endif %}
+            </tbody>
+          </table>
+
+      </div>
+      </div>
+
+<form action="/pdt/iteration/{{ pid }}/{{ phid }}/100000/" method="post">
+{% csrf_token %}
+<button type="submit" class="btn btn-success">Add Iteration</button>
+</form>
+<br><br>
+
+
+<form action="/pdt/phase/{{ pid }}/10000000/" method="post">
+{% csrf_token %}
+<button type="submit" class="btn btn-primary" value="Go back to phase page">Go back to phase page</button>
+</form>
+
+        </div>
+    </body>
+    <footer>
+
+        </footer>
+</html>

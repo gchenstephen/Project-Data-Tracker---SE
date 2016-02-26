@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}Project Data Tracker</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        
+        {% load staticfiles %}
+        <!--<link rel="stylesheet" href="{% static 'css/kube.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />-->
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css" />
+        <script src="{% static 'js/user.js' %}"></script>
+    </head>
+    <body role="document">
+
+        
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/pdt/activity/">Project Data Tracker</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="/pdt/dev_project/{{ did }}/0/" style="text-decoration:none">Development</a></li>
+                <li><a href="/pdt/dev_project/{{ did }}/0/" style="text-decoration:none">Defect removal</a></li>
+                <li><a href="/pdt/dev_project/{{ did }}/1/" style="text-decoration:none">Management</a></li>
+              </ul>
+              
+            </div><!--/.nav-collapse -->
+          </div>
+        </nav>
+
+        <div class="container theme-showcase" role="main">
+            <div class="page-header">
+      </div>
+
+
+
+
+
+	<div class="row">
+        <div class="col-md-12">
+
+        	<h2>Defect Report</h2>
+			  <form role="form" action="/pdt/defect_report/{{ did }}/{{ pid }}/{{ phid }}/1/{{ it_id }}/" method="post">
+			  	{% csrf_token %}
+			    <div class="form-group">
+			      <label for="type">Type: </label>
+			      <select name="type" class="form-control">
+			         <option value="Injected">Injected here</option>
+			         <option value="delivered">Delivered from previous iterations</option>
+			      </select>
+			    </div>
+			    <div class="form-group">
+			      <label for="iteration">Which Iteration:</label>
+			      <ul><li>Iteration {{ it_id }} </li></ul>
+			    </div>
+			    <div class="form-group">
+			      <label for="implementation">Implementation:</label>
+			      <select name="implementation"  class="form-control">
+                    <option value="Good fix">Good fix</option>
+                    <option value="Bad fix">Bad fix</option>
+                  </select>
+			    </div>
+			    <div class="form-group">
+			      <label for="des">Description:</label>
+			      <textarea type="text" class="form-control" rows="5" name="description" placeholder="Describe the Defect."></textarea>
+			    </div>
+
+			    <button type="submit" class="btn btn-default">Submit</button>
+			  </form><br><br>
+            
+        </div>
+
+      </div>
+
+<form action="/pdt/dev_iteration/{{ did }}/{{ pid }}/{{ phid }}/0/" method="post">
+{% csrf_token %}
+<button type="submit" class="btn btn-primary" value="Go back to iteration page">Go back to iteration page</button>
+</form><br><br>
+
+<form action="/pdt/activity/" method="post">
+{% csrf_token %}
+<button type="submit" class="btn btn-primary" value="Go back to activity page">Go back to activity page</button>
+</form>
+
+        </div>
+    </body>
+    <footer>
+
+        </footer>
+</html>

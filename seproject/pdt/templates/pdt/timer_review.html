@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}Project Data Tracker</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        
+        {% load staticfiles %}
+        <!--<link rel="stylesheet" href="{% static 'css/kube.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />-->
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css" />
+        <script src="{% static 'js/user.js' %}"></script>
+    </head>
+    <body role="document">
+
+        
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            
+            <div id="navbar" class="navbar-collapse collapse">
+             
+
+              <form class="navbar-form navbar-right" method="post">
+                <button type="button" class="btn btn-danger" onclick="window.open('', '_self', ''); window.close();">
+                  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Close
+                </button>
+              </form>
+
+            </div><!--/.nav-collapse -->
+          </div>
+        </nav>
+
+        <div class="container theme-showcase" role="main">
+            <div class="page-header">
+      </div>
+            
+      <div class="row">
+        <div class="col-md-12">
+            <h3>Timer Review</h3>
+
+          <table class="table">
+            {% if timers %}
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Recorded total(s)</th>
+                <th>Modified total(s)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for timer in timers %}
+              <tr>
+                <td>Timer {{ timer.id }}</td>
+                <td>{{ timer.total_time }}</td>
+                <td>{{ timer.modified_time }}</td>
+              </tr>
+              {% endfor %}
+      {% else %}
+      <div class="alert alert-warning" role="alert">
+            No related timers
+          </div>
+      {% endif %}
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+        </div>
+
+
+    </body>
+</html>
+
+

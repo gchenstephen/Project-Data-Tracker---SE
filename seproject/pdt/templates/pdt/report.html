@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}Project Data Tracker</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        
+        {% load staticfiles %}
+        <!--<link rel="stylesheet" href="{% static 'css/kube.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />-->
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css" />
+        <script src="{% static 'js/user.js' %}"></script>
+    </head>
+    <body role="document">
+
+        
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/pdt/project/0">Project Data Tracker</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <!--<li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li class="dropdown-header">Nav header</li>
+                    <li><a href="#">Separated link</a></li>
+                    <li><a href="#">One more separated link</a></li>
+                  </ul>
+                </li>-->
+                </li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
+        </nav>
+
+        <div class="container theme-showcase" role="main">
+            <div class="page-header">
+      </div>
+      <div class="row">
+            <h1>{{ proj }}</h1>
+        <div class="col-md-6">
+            <h3>Project general report</h3>
+
+            <table class="table">
+        <thead>
+            <th>Summary</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Total SLOC</td>
+                <td>{{ t_sloc }}</td>
+            </tr>
+            <tr>
+                <td>Defects injected</td>
+                <td>{{ total_defect }}</td>
+            </tr>
+            <tr>
+                <td>Defects removal</td>
+                <td>{{ total_goodfix }}</td>
+            </tr>
+            <tr>
+                <td>Defects density</td>
+                <td>{{ defect_density }} %</td>
+            </tr>
+            <tr>
+                <td>Developers involved</td>
+                <td>{{ total_dev }}</td>
+            </tr>
+            <tr>
+                <td>Injection rate</td>
+                <td>{{ total_injectrate }} %</td>
+            </tr>
+            <tr>
+                <td>Removal rate</td>
+                <td>{{ total_removerate }} %</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+
+        <div class="col-md-6">
+            <h3>Source lines of code(SLOC)</h3>
+
+    <table class="table">
+        <thead>
+        <tr><th>Phase</th><th>Inception</th>
+        <th>Elaboration</th><th>Construction</th>
+        <th>Transition</th></tr></thead>
+
+            <tr><td>SLOC</td><td>{{ i_sloc }}</td>
+            <td>{{ e_sloc }}</td><td>{{ c_sloc }}</td>
+        <td>{{ t_sloc }}</td></tr>
+        <tr>
+            <td>Defects injected</td>
+            <td>{{ inception.defect_count }}</td>
+            <td>{{ elaboration.defect_count }}</td>
+            <td>{{ construction.defect_count }}</td>
+            <td>{{ transition.defect_count }}</td>
+        </tr>
+        <tr>
+            <td>Defect removal</td>
+            <td>{{ inception.goodfix_count }}</td>
+            <td>{{ elaboration.goodfix_count }}</td>
+            <td>{{ construction.goodfix_count }}</td>
+            <td>{{ transition.goodfix_count }}</td>
+        </tr>
+        <tr>
+            <td>Defect density</td>
+            <td>{{ inception.defect_density|floatformat:2 }} %</td>
+            <td>{{ elaboration.defect_density|floatformat:2 }} %</td>
+            <td>{{ construction.defect_density|floatformat:2 }} %</td>
+            <td>{{ transition.defect_density|floatformat:2 }} %</td>
+        </tr>
+        <tr>
+            <td>Developers No.</td>
+            <td>{{ i_devno }}</td>
+            <td>{{ e_devno }}</td>
+            <td>{{ c_devno }}</td>
+            <td>{{ t_devno }}</td>
+        </tr>
+        <tr>
+            <td>Start date</td>
+            <td>{{ inception.start_date }}</td>
+            <td>{{ elaboration.start_date }}</td>
+            <td>{{ construction.start_date }}</td>
+            <td>{{ transition.start_date }}</td>
+        </tr>
+        <tr>
+            <td>Finish date</td>
+            <td>{{ inception.finish_date }}</td>
+            <td>{{ elaboration.finish_date }}</td>
+            <td>{{ construction.finish_date }}</td>
+            <td>{{ transition.finish_date }}</td>
+        </tr>
+        <tr>
+            <td>Inject rate</td>
+            <td>{{ inception.injectrate }} %</td>
+            <td>{{ elaboration.injectrate }} %</td>
+            <td>{{ construction.injectrate }} %</td>
+            <td>{{ transition.injectrate }} %</td>
+        </tr>
+        <tr>
+            <td>Removal rate</td>
+            <td>{{ inception.removerate }} %</td>
+            <td>{{ elaboration.removerate }} %</td>
+            <td>{{ construction.removerate }} %</td>
+            <td>{{ transition.removerate }} %</td>
+        </tr>
+    </table><br>
+
+
+        </div>
+    </div>
+
+<div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">Inception</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+            <thead>
+              <tr>
+                <th>Inception</th>
+                <th>SLOC</th>
+                <th>Effort</th>
+                <th>Defects injected</th>
+                <th>Defects removal</th>
+                <th>Defect density</th>
+                <th>Developers No.</th>
+                <th>Start date</th>
+                <th>Finish date</th>
+                <th>Injection rate</th>
+                <th>Removal rate</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for iter in ii %}
+                  <tr>
+                    <td>{{ iter.name }} iid {{ iter.id }}</td>
+                    <td>{{ iter.sloc }}</td>
+                    <td>{{ iter.effort }}</td>
+                    <td>{{ iter.defect_count }}</td>
+                    <td>{{ iter.goodfix_count }}</td>
+                    <td>{{ iter.defect_density }} %</td>
+                    <td>{{ iter.devno }}</td>
+                    <td>{{ iter.start_date }}</td>
+                    <td>{{ iter.finish_date }}</td>
+                    <td>{{ iter.injectrate }} %</td>
+                    <td>{{ iter.removerate }} %</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+
+            </div>
+          </div>
+        </div><!-- /.col-sm-3 -->
+
+        <div class="col-sm-12">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Elaboration</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+            <thead>
+              <tr>
+                <th>Elaboration</th>
+                <th>SLOC</th>
+                <th>Effort</th>
+                <th>Defects injected</th>
+                <th>Defects removal</th>
+                <th>Defect density</th>
+                <th>Developers No.</th>
+                <th>Start date</th>
+                <th>Finish date</th>
+                <th>Injection rate</th>
+                <th>Removal rate</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for iter in ei %}
+                  <tr>
+                    <td>{{ iter.name }} iid {{ iter.id }}</td>
+                    <td>{{ iter.sloc }}</td>
+                    <td>{{ iter.effort }}</td>
+                    <td>{{ iter.defect_count }}</td>
+                    <td>{{ iter.goodfix_count }}</td>
+                    <td>{{ iter.defect_density }} %</td>
+                    <td>{{ iter.devno }}</td>
+                    <td>{{ iter.start_date }}</td>
+                    <td>{{ iter.finish_date }}</td>
+                    <td>{{ iter.injectrate }} %</td>
+                    <td>{{ iter.removerate }} %</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+
+            </div>
+          </div>
+        </div><!-- /.col-sm-3 -->
+
+        <div class="col-sm-12">
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h3 class="panel-title">Construction</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+            <thead>
+              <tr>
+                <th>Construction</th>
+                <th>SLOC</th>
+                <th>Effort</th>
+                <th>Defects injected</th>
+                <th>Defects removal</th>
+                <th>Defect density</th>
+                <th>Developers No.</th>
+                <th>Start date</th>
+                <th>Finish date</th>
+                <th>Injection rate</th>
+                <th>Removal rate</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for iter in ci %}
+                  <tr>
+                    <td>{{ iter.name }} iid {{ iter.id }}</td>
+                    <td>{{ iter.sloc }}</td>
+                    <td>{{ iter.effort }}</td>
+                    <td>{{ iter.defect_count }}</td>
+                    <td>{{ iter.goodfix_count }}</td>
+                    <td>{{ iter.defect_density }} %</td>
+                    <td>{{ iter.devno }}</td>
+                    <td>{{ iter.start_date }}</td>
+                    <td>{{ iter.finish_date }}</td>
+                    <td>{{ iter.injectrate }} %</td>
+                    <td>{{ iter.removerate }} %</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+
+            </div>
+          </div>
+        </div><!-- /.col-sm-3 -->
+
+        <div class="col-sm-12">
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <h3 class="panel-title">Transition</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+            <thead>
+              <tr>
+                <th>Transition</th>
+                <th>SLOC</th>
+                <th>Effort</th>
+                <th>Defects injected</th>
+                <th>Defects removal</th>
+                <th>Defect density</th>
+                <th>Developers No.</th>
+                <th>Start date</th>
+                <th>Finish date</th>
+                <th>Injection rate</th>
+                <th>Removal rate</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for iter in ti %}
+                  <tr>
+                    <td>{{ iter.name }} iid {{ iter.id }}</td>
+                    <td>{{ iter.sloc }}</td>
+                    <td>{{ iter.effort }}</td>
+                    <td>{{ iter.defect_count }}</td>
+                    <td>{{ iter.goodfix_count }}</td>
+                    <td>{{ iter.defect_density }} %</td>
+                    <td>{{ iter.devno }}</td>
+                    <td>{{ iter.start_date }}</td>
+                    <td>{{ iter.finish_date }}</td>
+                    <td>{{ iter.injectrate }} %</td>
+                    <td>{{ iter.removerate }} %</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+
+            </div>
+          </div>
+        </div><!-- /.col-sm-3 -->
+
+
+
+    </body>
+    <footer>
+            <div class="wrap">
+                <span class="label label-default" bold>System time</span>
+                <strong>{% now "Y-n-j f a" %}</strong>
+            </div>
+        </footer>
+</html>
